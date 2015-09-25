@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "Fantasy football mini-league web application",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" & exit 1",
+    "start": "cd server & node index.js"
   },
   "repository": {
     "type": "git",
@@ -13,5 +14,21 @@
   "bugs": {
     "url": "https://github.com/navdeepsb/bazooka/issues"
   },
-  "homepage": "https://github.com/navdeepsb/bazooka"
+  "homepage": "https://github.com/navdeepsb/bazooka",
+  "dependencies": {
+    "body-parser": "^1.14.0",
+    "bole": "^2.0.0",
+    "bole-console": "^0.1.10",
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "jquery": "^2.1.4",
+    "mongoose": "^4.1.7",
+    "react": "^0.13.3"
+  },
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^4.0.1",
+    "grunt-contrib-watch": "^0.6.1"
+  }
 }

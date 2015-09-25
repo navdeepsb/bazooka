@@ -1,0 +1,31 @@
+.form {
+	max-width: 300px;
+}
+.form input, .form button, .form select {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+.txt, .dropdown {
+	background: #f8f8f8;
+	border: 1px solid #eee;
+}
+.txt--warn, .dropdown--warn {
+	border: 1px solid #f7b944;
+}
+.txt--error, .dropdown--error {
+	border: 1px solid #ef746f;
+}
+
+.btn {
+	color: white;
+	background: #b3cc57;
+	background: #83af9b;
+}
+
+.warn {
+	color: #f7b944;
+}
+.error {
+	color: #ef746f;
+}

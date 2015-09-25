@@ -1,0 +1,36 @@
+@import url( "https://fonts.googleapis.com/css?family=Droid+Sans" );
+
+body {
+	font-family: "Droid Sans", "Calibri", sans-serif;
+	font-size: 1em;
+	color: #666;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5 {
+	font-weight: normal;
+}
+
+a {
+	color: #83af9b;
+	text-decoration: none;
+}
+
+input, button, select {
+	font-family: inherit;
+	font-size: 1rem;
+	border: 0;
+	outline: none;
+	padding: 15px;
+}
+
+button {
+	cursor: pointer;
+}
+
+ul {
+	line-height: 1.5;
+}
