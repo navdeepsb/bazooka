@@ -6,7 +6,7 @@ var LoginForm = require( "./components/LoginForm" );
 
 React.render(
 	<LoginForm
-		submitUrl="/api/user/login"
+		submitUrl="/user/login"
 		redirectTo="/{{username}}/team" />,
 	document.getElementById( "form" )
 );

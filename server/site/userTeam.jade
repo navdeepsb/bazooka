@@ -1,0 +1,10 @@
+extends ../layout
+
+block body
+	include ./includes/header.jade
+
+	h1 Team page
+
+	p Your favorite team - #{ user.supporterOf }
+
+	a( href="/user/logout" ) Logout

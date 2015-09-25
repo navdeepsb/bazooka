@@ -6,7 +6,7 @@ var SignupForm = require( "./components/SignupForm" );
 
 React.render(
 	<SignupForm
-		submitUrl="/api/user/signup"
+		submitUrl="/user/signup"
 		redirectTo="/account-created" />,
 	document.getElementById( "form" )
 );

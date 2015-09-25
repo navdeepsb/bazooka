@@ -62,8 +62,6 @@ router.post( "/signup", function( req, res, next ) {
 
 router.post( "/login", function( req, res, next ) {
 
-	log.debug( req.url + " User logging in..." );
-
 	// Variables to be used in the API response:
 	var status     = 200;
 	var message    = CUSTOM_MESSAGE.UNKNOWN;
@@ -73,9 +71,9 @@ router.post( "/login", function( req, res, next ) {
 	var username = req.body.username;
 	var password = req.body.password;
 
-	var query = UserModel.findOne({ username: username, password: password });
+	log.debug( req.url + " @" + username + " logging in" );
 
-	query.select( "isActivated" );
+	var query = UserModel.findOne({ username: username, password: password });
 
 	query.exec( function( err, user ) {
 		if( err ) {
@@ -91,34 +89,43 @@ router.post( "/login", function( req, res, next ) {
 
 		if( user ) {
 			if( user.isActivated ) {
-				log.info( req.url + " @" + username + " login successful" );
-
 				// Valid credentials and activated user
 				status     = 200;
 				message    = CUSTOM_MESSAGE.OK;
 				customCode = CUSTOM_CODE.OK;
+
+				// Set the user info in the session:
+				req.session.user = user;
+
+				log.info( req.url + " @" + username + " login successful" );
 			}
 			else {
-				log.info( req.url + " @" + username + " is not activated" );
-
 				// Valid credentials and unactivated user
 				status     = 200;
 				message    = CUSTOM_MESSAGE.ACCOUNT_UNACTIVATED;
 				customCode = CUSTOM_CODE.ACCOUNT_UNACTIVATED;
+				log.info( req.url + " @" + username + " is not activated" );
 			}
 		}
 		else {
-			log.info( req.url + " @" + username + " sent invalid credentials" );
-
 			// Invalid credentials
 			status     = 200;
 			message    = CUSTOM_MESSAGE.INVALID_CREDENTIALS;
 			customCode = CUSTOM_CODE.INVALID_CREDENTIALS;
+			log.info( req.url + " @" + username + " sent invalid credentials" );
 		}
 
 		// Send the API response:
 		res.status( status ).send({ customCode: customCode, message: message });
 	});
+});
+
+router.get( "/logout", function( req, res, next ) {
+	if( req.session.user ) {
+		log.debug( req.url + " @" + req.session.user.username + " logged out" );
+		req.session.destroy();
+		res.redirect( "/" );
+	}
 });
 
 

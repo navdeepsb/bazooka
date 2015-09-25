@@ -20,6 +20,7 @@
     "bole": "^2.0.0",
     "bole-console": "^0.1.10",
     "express": "^4.13.3",
+    "express-session": "^1.11.3",
     "jade": "^1.11.0",
     "jquery": "^2.1.4",
     "mongoose": "^4.1.7",
