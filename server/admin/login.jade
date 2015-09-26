@@ -1,0 +1,12 @@
+extends ../layout
+
+block body
+	h1 Admin Login
+
+	form( class="form" method="post" action="/admin/login" )
+
+		input( type="text" name="username" class="txt" placeholder="Username" autocomplete="off" spellcheck="false" required="required" )
+
+		input( type="password" name="password" class="txt" placeholder="Password" autocomplete="off" spellcheck="false" required="required" )
+
+		button( class="btn" ) Login

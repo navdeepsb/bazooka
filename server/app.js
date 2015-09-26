@@ -1,13 +1,14 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
-var express    = require( "express" );
-var session    = require( "express-session" );
-var bodyParser = require( "body-parser" );
-var config     = require( "./config" );
-var siteRouter = require( "./site/router" );
-var userRouter = require( "./user/router" );
-var error404   = require( "./errors/404" );
-var error500   = require( "./errors/500" );
+var express     = require( "express" );
+var session     = require( "express-session" );
+var bodyParser  = require( "body-parser" );
+var config      = require( "./config" );
+var siteRouter  = require( "./site/router" );
+var userRouter  = require( "./user/router" );
+var adminRouter = require( "./admin/router" );
+var error404    = require( "./errors/404" );
+var error500    = require( "./errors/500" );
 
 
 // Initialize express for our app:
@@ -56,6 +57,16 @@ app.use( bodyParser.json() );
 // Set the routes:
 app.use( siteRouter );
 app.use( "/user", userRouter );
+app.use( "/admin", adminRouter );
+app.get( "/logout", function( req, res, next ) {
+	if( req.session.user ) {
+		req.session.destroy();
+		res.redirect( "/" );
+	}
+	else {
+		next();
+	}
+});
 
 
 // Finally, set the error handlers:

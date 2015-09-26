@@ -1,28 +1,15 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
-var express = require( "express" );
-var join    = require( "path" ).join;
-var config  = require( "../config" );
+var express      = require( "express" );
+var join         = require( "path" ).join;
+var authenticate = require( "../middlewares/authenticate" );
+var config       = require( "../config" );
 
 // Initialize the router:
 var router = express.Router();
 
 // Other variables:
 var maxRounds = 2 * ( ( config.app.teams || 20 ) - 1 );
-
-
-// Define a middleware for allowing only logged-in users
-// to view some pages of the website:
-var authenticate = function( req, res, next ) {
-	if( req.session.user ) {
-		// User is logged in...
-		next();
-	}
-	else {
-		// Redirect to the login page:
-		res.redirect( "/login" );
-	}
-};
 
 
 // Declare the directory containing the static assets:

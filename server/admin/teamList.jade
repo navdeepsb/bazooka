@@ -1,0 +1,16 @@
+extends ../layout
+
+block body
+	h1 #{ appName } admin panel
+
+	h2 All teams
+
+	if teams.length == 0
+		p No teams found
+	else
+		ul
+			each team in teams
+				li #{ team.name } #[a( href="/admin/save-team?id=#{ team._id }" ) edit]
+
+	p: a( href="/admin/panel" ) Admin Panel
+	p: a( href="/logout" ) Logout

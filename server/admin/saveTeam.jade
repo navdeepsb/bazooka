@@ -1,0 +1,41 @@
+extends ../layout
+
+block body
+	h1 #{ appName } admin panel
+
+	h2 #{ mode } team
+
+	- var methodType = mode === "Add" ? "post" : "put"
+
+	form( class="form" method="#{ methodType }" action="/admin/save-team" )
+
+		label Name
+		input( type="text" name="name" class="txt" value="#{ team.name }" placeholder="ex. Real Madrid" autocomplete="off" spellcheck="false" required="required" )
+
+		label Abbreviation
+		input( type="text" name="abbr" class="txt" value="#{ team.abbr }" placeholder="ex. RMA" autocomplete="off" spellcheck="false" required="required" )
+
+		label Path to crest
+		input( type="text" name="crest" class="txt" value="#{ team.crest }" placeholder="ex. /path/to/rma.jpg" autocomplete="off" spellcheck="false" )
+
+		label Stadium
+		input( type="text" name="stadium" class="txt" value="#{ team.stadium }" placeholder="ex. Santiago Bernabeu" autocomplete="off" spellcheck="false" required="required" )
+
+		label City
+		input( type="text" name="city" class="txt" value="#{ team.city }" placeholder="ex. Madrid" autocomplete="off" spellcheck="false" required="required" )
+
+		label Country
+		input( type="text" name="country" class="txt" value="#{ team.country }" placeholder="ex. Spain" autocomplete="off" spellcheck="false" required="required" )
+
+		input( type="checkbox" id="inFirstDivision" name="inFirstDivision" checked="#{ team.inFirstDivision }" )
+		label( for="inFirstDivision" ) In first division?
+
+		br
+		br
+
+		button( class="btn" ) Save
+
+	br
+
+	p: a( href="/admin/panel" ) Admin Panel
+	p: a( href="/logout" ) Logout

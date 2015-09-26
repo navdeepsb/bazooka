@@ -1,0 +1,12 @@
+extends ../layout
+
+block body
+	h1 #{ appName } admin panel
+
+	p Teams
+
+	ul
+		li: a( href="/admin/save-team" ) Add a team
+		li: a( href="/admin/view-teams" ) View all teams
+
+	p: a( href="/logout" ) Logout

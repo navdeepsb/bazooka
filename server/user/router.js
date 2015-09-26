@@ -16,7 +16,7 @@ router.post( "/signup", function( req, res, next ) {
 	// Create a new instance of the User model:
 	var userModel = new UserModel( req.body );
 
-	// Save the superhero and check for errors:
+	// Save the user and check for errors:
 	userModel.save( function( err, user ) {
 		// Variables to be used in the API response:
 		var status     = 200;
@@ -95,7 +95,7 @@ router.post( "/login", function( req, res, next ) {
 				customCode = CUSTOM_CODE.OK;
 
 				// Set the user info in the session:
-				user.password = undefined;
+				user.password    = undefined;
 				req.session.user = user;
 
 				log.info( req.url + " @" + username + " login successful" );
@@ -119,14 +119,6 @@ router.post( "/login", function( req, res, next ) {
 		// Send the API response:
 		res.status( status ).send({ customCode: customCode, message: message });
 	});
-});
-
-router.get( "/logout", function( req, res, next ) {
-	if( req.session.user ) {
-		log.debug( req.url + " @" + req.session.user.username + " logged out" );
-		req.session.destroy();
-		res.redirect( "/" );
-	}
 });
 
 
