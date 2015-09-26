@@ -1,5 +1,9 @@
 module.exports = {
-	appName: "Bazooka",
+	app: {
+		name: "Bazooka",
+		league: "La Liga",
+		teams: 20
+	},
 	db: {
 		uri: "mongodb://localhost:27017/bazooka",
 		username: "",

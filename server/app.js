@@ -17,8 +17,9 @@ var app = express();
 var env = app.get( "env" );
 
 // Set the view variables:
-app.locals.appName     = config.appName;
-app.locals.titleSuffix = " | " + config.appName;
+app.locals.appName     = config.app.name;
+app.locals.leagueName  = config.app.league;
+app.locals.titleSuffix = " | " + config.app.name;
 
 
 // Set the app templating system:

@@ -2,10 +2,13 @@
 // =============================================================
 var express = require( "express" );
 var join    = require( "path" ).join;
-
+var config  = require( "../config" );
 
 // Initialize the router:
 var router = express.Router();
+
+// Other variables:
+var maxRounds = 2 * ( ( config.app.teams || 20 ) - 1 );
 
 
 // Define a middleware for allowing only logged-in users
@@ -32,7 +35,7 @@ router.use( express.static( join( __dirname, "../../public" ) ) );
 // =============================================================
 router.get( "/", function( req, res ) {
 	res.render( "site/home", {
-		title       : "Bazooka",
+		title       : config.app.name,
 		titleSuffix : "",
 		user        : req.session.user
 	});
@@ -62,6 +65,20 @@ router.get( "/:unm/team", authenticate, function( req, res ) {
 		title : "@" + req.params.unm + "'s team",
 		user  : req.session.user
 	});
+});
+
+router.get( "/matches/:round", function( req, res, next ) {
+	var currRound = req.params.round;
+
+	if( currRound < 1 || currRound > maxRounds ) {
+		next();
+	}
+	else {
+		res.render( "site/matches", {
+			title : config.app.league + " Matches",
+			round : currRound
+		});
+	}
 });
 
 

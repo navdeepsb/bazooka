@@ -1,10 +1,13 @@
 extends ../layout
 
 block body
-	include ./includes/header.jade
+	include ./includes/header
 
 	h1 Team page
 
-	p Your favorite team - #{ user.supporterOf }
+	p @#{ user.username }'s team name - #[strong #{ user.teamName }]
+	p Fan of #{ user.supporterOf }
+	p From #{ user.country }
+	br
 
-	a( href="/user/logout" ) Logout
+	p: a( href="/user/logout" ) Logout

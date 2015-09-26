@@ -95,6 +95,7 @@ router.post( "/login", function( req, res, next ) {
 				customCode = CUSTOM_CODE.OK;
 
 				// Set the user info in the session:
+				user.password = undefined;
 				req.session.user = user;
 
 				log.info( req.url + " @" + username + " login successful" );

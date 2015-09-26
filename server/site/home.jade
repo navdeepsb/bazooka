@@ -1,7 +1,7 @@
 extends ../layout
 
 block body
-	h1 Home
+	h1 #{ appName }
 
 	ul
 		if user
@@ -10,3 +10,6 @@ block body
 		else
 			li: a( href="/signup" ) Signup
 			li: a( href="/login" ) Login
+
+		li: a( href="/matches/5" ) Matches
+		li: a( href="/standings" ) #{ leagueName } standings

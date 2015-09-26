@@ -1,0 +1,14 @@
+extends ../layout
+
+block body
+	include ./includes/header
+
+	h1 Matches
+
+	p: a( href="/standings" ) #{ leagueName } standings
+
+	p Round ##{ round }
+
+	#matches
+
+	script( src="/js/matches.bundle.js" )
