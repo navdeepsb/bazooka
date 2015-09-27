@@ -7,6 +7,7 @@ var config      = require( "./config" );
 var siteRouter  = require( "./site/router" );
 var userRouter  = require( "./user/router" );
 var adminRouter = require( "./admin/router" );
+var teamRouter  = require( "./team/router" );
 var error404    = require( "./errors/404" );
 var error500    = require( "./errors/500" );
 
@@ -56,8 +57,9 @@ app.use( bodyParser.json() );
 
 // Set the routes:
 app.use( siteRouter );
-app.use( "/user", userRouter );
+app.use( userRouter );
 app.use( "/admin", adminRouter );
+app.use( "/admin", teamRouter );
 app.get( "/logout", function( req, res, next ) {
 	if( req.session.user ) {
 		req.session.destroy();

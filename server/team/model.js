@@ -4,7 +4,7 @@ var mongoose = require( "mongoose" );
 var Schema   = mongoose.Schema;
 
 
-// Define the user schema:
+// Define the team schema:
 var TeamSchema = new Schema({
 	name    : { type: String, required: true, unique: true },
 	abbr    : { type: String, required: true },
@@ -17,7 +17,7 @@ var TeamSchema = new Schema({
 });
 
 
-// Define the user model:
+// Define the team model:
 var TeamModel = mongoose.model( "Team", TeamSchema );
 
 

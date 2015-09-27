@@ -2,7 +2,6 @@
 // =============================================================
 var express      = require( "express" );
 var join         = require( "path" ).join;
-var authenticate = require( "../middlewares/authenticate" );
 var config       = require( "../config" );
 
 // Initialize the router:
@@ -44,13 +43,6 @@ router.get( "/account-created", function( req, res ) {
 	res.render( "site/message", {
 		title   : "Account created",
 		message : "Your account has been created successfully. Please <a href='/login'>login</a> to continue..."
-	});
-});
-
-router.get( "/:unm/team", authenticate, function( req, res ) {
-	res.render( "site/userTeam", {
-		title : "@" + req.params.unm + "'s team",
-		user  : req.session.user
 	});
 });
 

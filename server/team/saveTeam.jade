@@ -11,7 +11,7 @@ block body
 	form( class="form" method="post" action="/admin/save-team" )
 
 		if mode === "Edit"
-			label _id
+			label _id ( Don't modify! )
 			input( type="text" name="_id" class="txt" value="#{ team._id }" spellcheck="false" required="required" )
 
 		label Name

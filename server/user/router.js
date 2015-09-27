@@ -3,13 +3,14 @@
 var router         = require( "express" ).Router();
 var log            = require( "bole" )( "user-router" );
 var UserModel      = require( "./model" );
+var authenticate   = require( "../middlewares/authenticate" );
 var CUSTOM_CODE    = require( "../data/customCodes" );
 var CUSTOM_MESSAGE = require( "../data/customMessages" );
 
 
 // API routes
 // =============================================================
-router.post( "/signup", function( req, res, next ) {
+router.post( "/user/signup", function( req, res, next ) {
 
 	log.debug( req.url + " Saving user..." );
 
@@ -60,7 +61,7 @@ router.post( "/signup", function( req, res, next ) {
 	});
 });
 
-router.post( "/login", function( req, res, next ) {
+router.post( "/user/login", function( req, res, next ) {
 
 	// Variables to be used in the API response:
 	var status     = 200;
@@ -121,5 +122,25 @@ router.post( "/login", function( req, res, next ) {
 	});
 });
 
+router.get( "/:unm/team", authenticate, function( req, res, next ) {
+	var unm = req.params.unm;
+
+	// Confirm if this user exists:
+	UserModel.findOne( { username: unm }, function( err, user ) {
+		if( err ) {
+			return next( err );
+		}
+
+		if( user ) {
+			res.render( "user/userTeam", {
+				title : "@" + unm + "'s team",
+				user  : req.session.user
+			});
+		}
+		else {
+			next();
+		}
+	});
+});
 
 module.exports = router;
