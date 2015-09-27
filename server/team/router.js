@@ -3,7 +3,7 @@
 var express        = require( "express" );
 var mongooseTypes  = require( "mongoose" ).Types;
 var TeamModel      = require( "../team/model" );
-var authenticate   = require( "../middlewares/authenticate" );
+var authenticate   = require( "../middlewares/authenticateAdmin" );
 var CUSTOM_CODE    = require( "../data/customCodes" );
 var CUSTOM_MESSAGE = require( "../data/customMessages" );
 

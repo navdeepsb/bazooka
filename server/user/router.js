@@ -3,7 +3,7 @@
 var router         = require( "express" ).Router();
 var log            = require( "bole" )( "user-router" );
 var UserModel      = require( "./model" );
-var authenticate   = require( "../middlewares/authenticate" );
+var authenticate   = require( "../middlewares/authenticateUser" );
 var CUSTOM_CODE    = require( "../data/customCodes" );
 var CUSTOM_MESSAGE = require( "../data/customMessages" );
 
@@ -122,7 +122,7 @@ router.post( "/user/login", function( req, res, next ) {
 	});
 });
 
-router.get( "/:unm/team", authenticate, function( req, res, next ) {
+router.get( "/:unm/team", function( req, res, next ) {
 	var unm = req.params.unm;
 
 	// Confirm if this user exists:
@@ -134,7 +134,8 @@ router.get( "/:unm/team", authenticate, function( req, res, next ) {
 		if( user ) {
 			res.render( "user/userTeam", {
 				title : "@" + unm + "'s team",
-				user  : req.session.user
+				user  : user,
+				isLoggedIn: req.session.user ? true : false
 			});
 		}
 		else {

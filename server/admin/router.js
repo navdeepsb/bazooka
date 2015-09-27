@@ -2,7 +2,7 @@
 // =============================================================
 var express      = require( "express" );
 var AdminModel   = require( "./model" );
-var authenticate = require( "../middlewares/authenticate" );
+var authenticate = require( "../middlewares/authenticateAdmin" );
 
 
 // Initialize the router:
@@ -24,15 +24,15 @@ router.post( "/login", function( req, res, next ) {
 
 	var query = AdminModel.findOne({ username: username, password: password });
 
-	query.exec( function( err, user ) {
+	query.exec( function( err, admin ) {
 		if( err ) {
 			return next( err );
 		}
 
-		if( user ) {
-			// Set the user info in the session:
-			user.password    = undefined;
-			req.session.user = user;
+		if( admin ) {
+			// Set the admin info in the session:
+			admin.password    = undefined;
+			req.session.admin = admin;
 
 			res.redirect( "/admin/panel" );
 		}

@@ -61,7 +61,7 @@ app.use( userRouter );
 app.use( "/admin", adminRouter );
 app.use( "/admin", teamRouter );
 app.get( "/logout", function( req, res, next ) {
-	if( req.session.user ) {
+	if( req.session.user || req.session.admin ) {
 		req.session.destroy();
 		res.redirect( "/" );
 	}

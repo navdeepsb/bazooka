@@ -10,4 +10,5 @@ block body
 	p From #{ user.country }
 	br
 
-	p: a( href="/logout" ) Logout
+	if isLoggedIn
+		p: a( href="/logout" ) Logout

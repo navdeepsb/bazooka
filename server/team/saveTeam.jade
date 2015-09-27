@@ -11,8 +11,7 @@ block body
 	form( class="form" method="post" action="/admin/save-team" )
 
 		if mode === "Edit"
-			label _id ( Don't modify! )
-			input( type="text" name="_id" class="txt" value="#{ team._id }" spellcheck="false" required="required" )
+			input( type="hidden" name="_id" class="txt" value="#{ team._id }" spellcheck="false" required="required" )
 
 		label Name
 		input( type="text" name="name" class="txt" value="#{ team.name }" placeholder="ex. Real Madrid" autocomplete="off" spellcheck="false" required="required" )
