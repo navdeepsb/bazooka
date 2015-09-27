@@ -8,9 +8,9 @@ block body
 	if teams.length == 0
 		p No teams found
 	else
-		ul
+		ol
 			each team in teams
-				li #{ team.name } #[a( href="/admin/save-team?id=#{ team._id }" ) edit]
+				li #{ team.name } &middot; #[a( href="/admin/save-team?id=#{ team._id }" ) edit] &middot; #[a( href="/admin/delete-team?id=#{ team._id }" ) delete]
 
 	p: a( href="/admin/panel" ) Admin Panel
 	p: a( href="/logout" ) Logout

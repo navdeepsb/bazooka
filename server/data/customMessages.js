@@ -1,5 +1,6 @@
 module.exports = {
 	ERROR: "Error occurred",
+	NOT_FOUND: "Not found",
 	UNKNOWN: "Unknown",
 	OK: "OK",
 	USERNAME_UNAVAILABLE: "This username is already taken",

@@ -1,5 +1,6 @@
 module.exports = {
-	ERROR: -2,
+	ERROR: -3,
+	NOT_FOUND: -2,
 	UNKNOWN: -1,
 	OK: 0,
 	USERNAME_UNAVAILABLE: 1000,

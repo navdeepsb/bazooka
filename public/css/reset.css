@@ -32,6 +32,6 @@ button {
 	cursor: pointer;
 }
 
-ul {
+ul, ol {
 	line-height: 1.5;
 }

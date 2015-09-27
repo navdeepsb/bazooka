@@ -5,9 +5,14 @@ block body
 
 	h2 #{ mode } team
 
-	- var methodType = mode === "Add" ? "post" : "put"
+	if message
+		p #{ message }
 
-	form( class="form" method="#{ methodType }" action="/admin/save-team" )
+	form( class="form" method="post" action="/admin/save-team" )
+
+		if mode === "Edit"
+			label _id
+			input( type="text" name="_id" class="txt" value="#{ team._id }" spellcheck="false" required="required" )
 
 		label Name
 		input( type="text" name="name" class="txt" value="#{ team.name }" placeholder="ex. Real Madrid" autocomplete="off" spellcheck="false" required="required" )
