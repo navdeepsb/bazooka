@@ -7,8 +7,6 @@ var Selector       = require( "./common/Selector" );
 var UnmValidator   = require( "../validators/username" );
 var EmailValidator = require( "../validators/email" );
 var PwdValidator   = require( "../validators/password" );
-var countries      = require( "../data/countries" );
-var teams          = require( "../data/teams" );
 
 
 // The main component:
@@ -20,9 +18,21 @@ var SignupForm = React.createClass({
 			email       : "",
 			teamName    : "",
 			password    : "",
-			country     : "",
 			supporterOf : ""
 		};
+	},
+
+	componentDidMount: function() {
+		$.ajax({
+			url      : this.props.getTeamsUrl,
+			type     : "GET",
+			dataType : "json",
+			context  : this,
+			success  : function( response ) {
+				this.teams = response.teams || [];
+				this.forceUpdate();
+			}
+		});
 	},
 
 	_handleUsernameInput: function( event ) {
@@ -46,12 +56,6 @@ var SignupForm = React.createClass({
 	_handlePasswordInput: function( event ) {
 		this.setState({
 			password: event.target.value
-		});
-	},
-
-	_handleCountryChange: function( event ) {
-		this.setState({
-			country: event.target.selectedOptions[ 0 ].innerHTML
 		});
 	},
 
@@ -93,7 +97,6 @@ var SignupForm = React.createClass({
 			this._validateTeam( this.state.teamName ) &&
 			this._validatePassword( this.state.password ) &&
 			this._validateConfirmPassword( this.refs.confirmPassword.state.value ) &&
-			this._validateSelector( this.state.country ) &&
 			this._validateSelector( this.state.supporterOf ) ) {
 
 			// Form ready for submit:
@@ -122,7 +125,6 @@ var SignupForm = React.createClass({
 			this.refs.teamName.validate();
 			this.refs.password.validate();
 			this.refs.confirmPassword.validate();
-			this.refs.country.validate();
 			this.refs.supporterOf.validate();
 		}
 	},
@@ -168,17 +170,9 @@ var SignupForm = React.createClass({
 					validator={ this._validateConfirmPassword } />
 
 				<Selector
-					ref="country"
-					caption="Your country"
-					options={ countries }
-					initialValue={ this.state.country }
-					isRequired={ true }
-					onChange={ this._handleCountryChange } />
-
-				<Selector
 					ref="supporterOf"
 					caption="Supporter of..."
-					options={ teams }
+					options={ this.teams || [] }
 					initialValue={ this.state.supporterOf }
 					isRequired={ true }
 					onChange={ this._handleFavTeamChange } />

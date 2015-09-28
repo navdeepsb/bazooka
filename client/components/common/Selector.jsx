@@ -7,7 +7,8 @@ var React = require( "react" );
 var OptionWrapper = React.createClass({
 	render: function() {
 		var item = this.props.item;
-		return <option value={ item._id }>{ item.name }</option>;
+		var isDisabled = this.props.disabled ? true : false;
+		return <option value={ item._id } disabled={ isDisabled }>{ item.name }</option>;
 	}
 });
 
@@ -54,6 +55,7 @@ var Selector = React.createClass({
 				onChange={ this._handleChange }>
 
 				<OptionWrapper
+					disabled="disabled"
 					item={{ _id: this.unselectedVal, name: this.props.caption }} />
 
 				{ this.props.options.map( function( item, idx ) {

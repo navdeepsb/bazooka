@@ -23,11 +23,6 @@ block body
 			for team in allTeams
 				option( value="#{ team.name }" selected=team.name == player.team ) #{ team.name }
 
-		label Country
-		select( name="country" class="txt" )
-			for pos in allPos
-				option( value="#{ pos }" selected=pos == player.position ) #{ pos }
-
 		label Worth
 		input( type="number" step="0.5" name="worth" class="txt" value="#{ player.worth }" placeholder="ex. 8.5" autocomplete="off" spellcheck="false" required="required" )
 

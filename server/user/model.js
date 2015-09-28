@@ -10,7 +10,6 @@ var UserSchema = new Schema({
 	email       : { type: String, required: true, unique: true },
 	teamName    : { type: String, required: true },
 	password    : { type: String, required: true },
-	country     : { type: String, required: true },
 	supporterOf : { type: String, required: true },
 	createdOn   : { type: Number, default: Date.now() },
 	updatedOn   : Number,
