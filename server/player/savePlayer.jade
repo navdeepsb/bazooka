@@ -1,0 +1,50 @@
+extends ../layout
+
+block body
+	h1 #{ appName } admin panel
+
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/view-players" ) All] &nbsp; #[a( href="/logout" ) Logout]
+
+	h2 #{ mode } player
+
+	form( class="form" method="post" action="/admin/save-player" )
+
+		if mode === "Edit"
+			input( type="hidden" name="_id" class="txt" value="#{ player._id }" spellcheck="false" required="required" )
+
+		label Name
+		input( type="text" name="name" class="txt" value="#{ player.name }" placeholder="ex. John Doe" autocomplete="off" spellcheck="false" required="required" )
+
+		label Picture
+		input( type="text" name="picture" class="txt" value="#{ player.picture }" placeholder="ex. /path/to/pic.jpg" autocomplete="off" spellcheck="false" )
+
+		label Team
+		select( name="team" class="txt" )
+			for team in allTeams
+				option( value="#{ team.name }" selected=team.name == player.team ) #{ team.name }
+
+		label Country
+		select( name="country" class="txt" )
+			for pos in allPos
+				option( value="#{ pos }" selected=pos == player.position ) #{ pos }
+
+		label Worth
+		input( type="number" step="0.5" name="worth" class="txt" value="#{ player.worth }" placeholder="ex. 8.5" autocomplete="off" spellcheck="false" required="required" )
+
+		label Jersey number
+		input( type="number" name="jerseyNum" class="txt" value="#{ player.jerseyNum }" placeholder="ex. 7" autocomplete="off" spellcheck="false" required="required" )
+
+		label Position
+		select( name="position" class="txt" )
+			for pos in allPos
+				option( value="#{ pos }" selected=pos == player.position ) #{ pos }
+
+		label Status
+		select( name="status" class="txt" )
+			for stat in allStatus
+				option( value="#{ stat }" selected=stat === player.status ) #{ stat }
+
+		br
+		br
+
+		button( class="btn" ) Save

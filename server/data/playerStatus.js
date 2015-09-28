@@ -1,0 +1,1 @@
+module.exports = [ "Fit", "Doubtful", "Injured", "Suspended" ];

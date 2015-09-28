@@ -3,10 +3,9 @@ extends ../layout
 block body
 	h1 #{ appName } admin panel
 
-	h2 #{ mode } team
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/view-teams" ) All] &nbsp; #[a( href="/logout" ) Logout]
 
-	if message
-		p #{ message }
+	h2 #{ mode } team
 
 	form( class="form" method="post" action="/admin/save-team" )
 
@@ -38,8 +37,3 @@ block body
 		br
 
 		button( class="btn" ) Save
-
-	br
-
-	p: a( href="/admin/panel" ) Admin Panel
-	p: a( href="/logout" ) Logout

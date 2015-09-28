@@ -3,6 +3,8 @@ extends ../layout
 block body
 	h1 #{ appName } admin panel
 
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/add-team" ) + Add] &nbsp; #[a( href="/logout" ) Logout]
+
 	h2 All teams
 
 	if teams.length == 0
@@ -10,7 +12,4 @@ block body
 	else
 		ol
 			each team in teams
-				li #{ team.name } &middot; #[a( href="/admin/save-team?id=#{ team._id }" ) edit] &middot; #[a( href="/admin/delete-team?id=#{ team._id }" ) delete]
-
-	p: a( href="/admin/panel" ) Admin Panel
-	p: a( href="/logout" ) Logout
+				li #{ team.name } &middot; #[a( href="/admin/edit-team?id=#{ team._id }" ) edit] &middot; #[a( href="/admin/delete-team?id=#{ team._id }" ) delete]

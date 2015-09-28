@@ -2,7 +2,8 @@
 // =============================================================
 var express        = require( "express" );
 var mongooseTypes  = require( "mongoose" ).Types;
-var TeamModel      = require( "../team/model" );
+var TeamModel      = require( "./model" );
+var modelUtils     = require( "../utils/modelUtils" );
 var authenticate   = require( "../middlewares/authenticateAdmin" );
 var CUSTOM_CODE    = require( "../data/customCodes" );
 var CUSTOM_MESSAGE = require( "../data/customMessages" );
@@ -11,66 +12,48 @@ var CUSTOM_MESSAGE = require( "../data/customMessages" );
 // Initialize the router:
 var router = express.Router();
 
+// Other variables:
+var TeamUtils = modelUtils( TeamModel );
+
 
 // SET ROUTES
 // =============================================================
-router.get( "/save-team", authenticate, function( req, res, next ) {
+router.get( "/add-team", authenticate, function( req, res, next ) {
+	res.render( "team/saveTeam", {
+		title : "Add Team",
+		mode  : "Add",
+		team  : TeamUtils.getDefaultModel()
+	});
+});
+
+router.get( "/edit-team", authenticate, function( req, res, next ) {
 	// Variables:
 	var teamId   = req.query.id;
-	var mode     = teamId ? "Edit" : "Add";
-	var message  = "";
-	var teamInfo = {
-		_id     : "",
-		name    : "",
-		abbr    : "",
-		crest   : "",
-		stadium : "",
-		city    : "",
-		country : "",
-		inFirstDivision: true
-	};
+	var teamInfo = TeamUtils.getDefaultModel();
 
-	if( teamId ) {
-		// Saving a team...
-
-		// Make a query to get the requested team:
-		var query = TeamModel.findOne({ _id: teamId }).select( "-rounds" );
-
-		// Fire the query:
-		query.exec( function( err, team ) {
-			if( err ) {
-				return next( err );
-			}
-
-			if( team ) {
-				// Found team...
-				for( var key in teamInfo ) {
-					teamInfo[ key ] = team[ key ];
-				}
-			}
-			else {
-				// Team not found...
-				mode    = "Add";
-				message = "The team having _id " + teamId + " doesn't exist!";
-			}
-
-			res.render( "team/saveTeam", {
-				title   : "Save Team",
-				mode    : mode,
-				team    : teamInfo,
-				message : message
-			});
-		});
+	if( !teamId ) {
+		return next();
 	}
-	else {
-		// Adding new team...
+
+	TeamUtils.getOne( { _id: teamId }, "-rounds" ).then( function( doc ) {
+		if( !doc ) {
+			// Team not found...
+			return next();
+		}
+
+		// Found team...
+		for( var key in doc ) {
+			teamInfo[ key ] = doc[ key ];
+		}
+
 		res.render( "team/saveTeam", {
-			title   : "Save Team",
-			mode    : mode,
+			title   : "Edit Team",
+			mode    : "Edit",
 			team    : teamInfo,
-			message : message
 		});
-	}
+	}).then( null, function( err ) {
+		return next( err );
+	});
 });
 
 router.post( "/save-team", authenticate, function( req, res, next ) {
@@ -144,22 +127,17 @@ router.get( "/delete-team", authenticate, function( req, res, next ) {
 });
 
 router.get( "/view-teams", authenticate, function( req, res, next ) {
-	// Make a blank search to get all teams:
-	var query = TeamModel.find({});
+	// Define the keys to be be get (space-separated):
+	var selectClause = "name";
 
-	// Get only the name:
-	query.select( "name" );
-
-	// Fire the query:
-	query.exec( function( err, teams ) {
-		if( err ) {
-			return next( err );
-		}
-
+	// Now get all the teams using promise:
+	TeamUtils.getAll( selectClause ).then( function( docs ) {
 		res.render( "team/teamList", {
 			title : "All Teams",
-			teams : teams || []
+			teams : docs
 		});
+	}).then( null, function( err ) {
+		return next( err );
 	});
 });
 

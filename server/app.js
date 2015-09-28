@@ -1,15 +1,16 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
-var express     = require( "express" );
-var session     = require( "express-session" );
-var bodyParser  = require( "body-parser" );
-var config      = require( "./config" );
-var siteRouter  = require( "./site/router" );
-var userRouter  = require( "./user/router" );
-var adminRouter = require( "./admin/router" );
-var teamRouter  = require( "./team/router" );
-var error404    = require( "./errors/404" );
-var error500    = require( "./errors/500" );
+var express      = require( "express" );
+var session      = require( "express-session" );
+var bodyParser   = require( "body-parser" );
+var config       = require( "./config" );
+var siteRouter   = require( "./site/router" );
+var userRouter   = require( "./user/router" );
+var adminRouter  = require( "./admin/router" );
+var teamRouter   = require( "./team/router" );
+var playerRouter = require( "./player/router" );
+var error404     = require( "./errors/404" );
+var error500     = require( "./errors/500" );
 
 
 // Initialize express for our app:
@@ -60,6 +61,7 @@ app.use( siteRouter );
 app.use( userRouter );
 app.use( "/admin", adminRouter );
 app.use( "/admin", teamRouter );
+app.use( "/admin", playerRouter );
 app.get( "/logout", function( req, res, next ) {
 	if( req.session.user || req.session.admin ) {
 		req.session.destroy();
