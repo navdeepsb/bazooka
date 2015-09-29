@@ -143,7 +143,7 @@ router.get( "/delete-player", authenticate, function( req, res, next ) {
 
 router.get( "/view-players", authenticate, function( req, res, next ) {
 	// Define the keys to be be get (space-separated):
-	var selectClause = "name team jerseyNum position";
+	var selectClause = "name team jerseyNum position status";
 
 	// Now get all the players using promise:
 	PlayerUtils.getAll( selectClause ).then( function( docs ) {

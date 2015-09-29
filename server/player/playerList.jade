@@ -5,11 +5,11 @@ block body
 
 	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/add-player" ) + Add] &nbsp; #[a( href="/logout" ) Logout]
 
-	h2 All players
+	h2 All players (#{ players.length })
 
 	if players.length == 0
 		p No players found
 	else
 		ul
 			each player in players
-				li #{ player.name } (#{ player.position }) &middot; #[a( href="/admin/edit-player?id=#{ player._id }" ) edit] &middot; #[a( href="/admin/delete-player?id=#{ player._id }" ) delete]
+				li #{ player.team } - #{ player.jerseyNum } - (#{ player.position }) #{ player.name } - #{ player.status } &middot; #[a( href="/admin/edit-player?id=#{ player._id }" ) edit] &middot; #[a( href="/admin/delete-player?id=#{ player._id }" ) delete]
