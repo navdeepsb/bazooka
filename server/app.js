@@ -1,17 +1,17 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
-var express       = require( "express" );
-var session       = require( "express-session" );
-var bodyParser    = require( "body-parser" );
-var config        = require( "./config" );
-var siteRouter    = require( "./site/router" );
-var userRouter    = require( "./user/router" );
-var adminRouter   = require( "./admin/router" );
-var teamRouter    = require( "./team/router" );
-var teamAPIRouter = require( "./team/apiRouter" );
-var playerRouter  = require( "./player/router" );
-var error404      = require( "./errors/404" );
-var error500      = require( "./errors/500" );
+var express        = require( "express" );
+var session        = require( "express-session" );
+var bodyParser     = require( "body-parser" );
+var config         = require( "./config" );
+var adminAPIRouter = require( "./admin/apiRouter" );
+var adminRouter    = require( "./admin/router" );
+var siteRouter     = require( "./site/router" );
+var userAPIRouter  = require( "./user/apiRouter" );
+var userRouter     = require( "./user/router" );
+var teamAPIRouter  = require( "./team/apiRouter" );
+var error404       = require( "./errors/404" );
+var error500       = require( "./errors/500" );
 
 
 // Initialize express for our app:
@@ -52,27 +52,18 @@ app.use( function( req, res, next ) {
 
 // Set the app middleware:
 // Configure app to use bodyParser()
-// This will let us get the data from a POST
+// This will populate the `req.body` object ( as a JSON )
 app.use( bodyParser.urlencoded({ extended: true }) );
 app.use( bodyParser.json() );
 
 
 // Set the routes:
 app.use( siteRouter );
+app.use( "/user", userAPIRouter );
 app.use( userRouter );
+app.use( "/admin", adminAPIRouter );
 app.use( "/admin", adminRouter );
-app.use( "/admin", teamRouter );
 app.use( "/api", teamAPIRouter );
-app.use( "/admin", playerRouter );
-app.get( "/logout", function( req, res, next ) {
-	if( req.session.user || req.session.admin ) {
-		req.session.destroy();
-		res.redirect( "/" );
-	}
-	else {
-		next();
-	}
-});
 
 
 // Finally, set the error handlers:

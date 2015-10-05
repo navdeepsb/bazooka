@@ -25,6 +25,13 @@ bole.output({
 });
 
 
+// HANDLE UNCAUGHT EXCEPTIONS
+// =============================================================
+process.on( "uncaughtException", function( err ) {
+	log.error( err );
+});
+
+
 // CONNECT TO MONGO
 // =============================================================
 mongoose.connect( dbUri, function( err ) {

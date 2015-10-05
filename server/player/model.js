@@ -1,9 +1,12 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
 var mongoose        = require( "mongoose" );
-var Schema          = mongoose.Schema;
 var VALID_POSITIONS = require( "../data/playingPositions" );
 var VALID_STATUS    = require( "../data/playerStatus" );
+
+
+// Variables:
+var Schema = mongoose.Schema;
 
 
 // Define the player schema:

@@ -6,7 +6,7 @@ block body
 	ul
 		if user
 			li: a( href="/#{ user.username }/team" ) My team
-			li: a( href="/logout" ) Logout
+			li: a( href="/user/logout" ) Logout
 		else
 			li: a( href="/signup" ) Signup
 			li: a( href="/login" ) Login

@@ -1,14 +1,13 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
-var express      = require( "express" );
-var join         = require( "path" ).join;
-var config       = require( "../config" );
+var express             = require( "express" );
+var join                = require( "path" ).join;
+var config              = require( "../config" );
+var validateRound       = require( "../middlewares/validateRound" );
+var preventLoggedInUser = require( "../middlewares/preventLoggedInUser" );
 
 // Initialize the router:
 var router = express.Router();
-
-// Other variables:
-var maxRounds = 2 * ( ( config.app.teams || 20 ) - 1 );
 
 
 // Declare the directory containing the static assets:
@@ -19,6 +18,8 @@ router.use( express.static( join( __dirname, "../../public" ) ) );
 
 // SET WEBSITE ROUTES
 // =============================================================
+
+// Home page
 router.get( "/", function( req, res ) {
 	res.render( "site/home", {
 		title       : config.app.name,
@@ -27,37 +28,33 @@ router.get( "/", function( req, res ) {
 	});
 });
 
-router.get( "/signup", function( req, res ) {
+// Signup page
+router.get( "/signup", preventLoggedInUser, function( req, res ) {
 	res.render( "site/signup", {
 		title : "Signup"
 	});
 });
 
-router.get( "/login", function( req, res ) {
+// Login page
+router.get( "/login", preventLoggedInUser, function( req, res ) {
 	res.render( "site/login", {
 		title : "Login"
 	});
 });
 
-router.get( "/account-created", function( req, res ) {
-	res.render( "site/message", {
-		title   : "Account created",
-		message : "Your account has been created successfully. Please <a href='/login'>login</a> to continue..."
+// Acct. created page
+router.get( "/account-created", preventLoggedInUser, function( req, res ) {
+	res.render( "site/accountCreated", {
+		title : "Account created"
 	});
 });
 
-router.get( "/matches/:round", function( req, res, next ) {
-	var currRound = req.params.round;
-
-	if( currRound < 1 || currRound > maxRounds ) {
-		next();
-	}
-	else {
-		res.render( "site/matches", {
-			title : config.app.league + " Matches",
-			round : currRound
-		});
-	}
+// Matches page
+router.get( "/matches/:round", validateRound, function( req, res, next ) {
+	res.render( "site/matches", {
+		title : config.app.league + " Matches",
+		round : req.params.round
+	});
 });
 
 

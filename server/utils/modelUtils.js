@@ -10,8 +10,16 @@ module.exports = function( mModel ) {
 			return mModel.findOne( query ).select( selectClause ).exec();
 		},
 
-		getAll: function( selectClause ) {
-			return mModel.find( {} ).select( selectClause ).exec();
+		getAll: function( query, selectClause ) {
+			return mModel.find( query ).select( selectClause ).exec();
+		},
+
+		delete: function( query ) {
+			return mModel.remove( query ).exec();
+		},
+
+		upsert: function( query, doc ) {
+			return mModel.findOneAndUpdate( query, doc, { upsert: true } ).exec();
 		}
 	};
 };

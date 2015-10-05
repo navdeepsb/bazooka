@@ -13,7 +13,7 @@ var TeamSchema = new Schema({
 	city    : { type: String, default: "" },
 	country : { type: String, default: "" },
 	rounds  : { type: Object, default: {} },
-	inFirstDivision: Boolean
+	inFirstDivision: { type: Boolean, default: true }
 });
 
 

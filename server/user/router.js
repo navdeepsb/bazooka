@@ -1,147 +1,64 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
 var router         = require( "express" ).Router();
-var log            = require( "bole" )( "user-router" );
+var log            = require( "bole" )( "userRouter" );
 var UserModel      = require( "./model" );
 var authenticate   = require( "../middlewares/authenticateUser" );
-var CUSTOM_CODE    = require( "../data/customCodes" );
-var CUSTOM_MESSAGE = require( "../data/customMessages" );
+var modelUtils     = require( "../utils/modelUtils" );
+
+
+// Define the model utils:
+var UserUtils  = modelUtils( UserModel );
 
 
 // API routes
 // =============================================================
-router.post( "/user/signup", function( req, res, next ) {
 
-	log.debug( req.url + " Saving user..." );
-
-	// Create a new instance of the User model:
-	var userModel = new UserModel( req.body );
-
-	// Save the user and check for errors:
-	userModel.save( function( err, user ) {
-		// Variables to be used in the API response:
-		var status     = 200;
-		var message    = CUSTOM_MESSAGE.UNKNOWN;
-		var customCode = CUSTOM_CODE.UNKNOWN;
-
-		if( err ) {
-			log.error( req.url + " " + err.errmsg );
-
-			// Check for duplicate key error:
-			if( err.code === 11000 ) {
-				// Set the status as successful because we know about the error:
-				status = 200;
-
-				if( err.errmsg.indexOf( "$username" ) > 0 ) {
-					message    = CUSTOM_MESSAGE.USERNAME_UNAVAILABLE;
-					customCode = CUSTOM_CODE.USERNAME_UNAVAILABLE;
-				}
-				else if( err.errmsg.indexOf( "$email" ) > 0 ) {
-					message    = CUSTOM_MESSAGE.EMAIL_UNAVAILABLE;
-					customCode = CUSTOM_CODE.EMAIL_UNAVAILABLE;
-				}
-			}
-			else {
-				// Unhandled error occurred:
-				status     = 500;
-				message    = CUSTOM_MESSAGE.ERROR;
-				customCode = CUSTOM_CODE.ERROR;
-			}
-		}
-		else {
-			// Success:
-			status     = 200;
-			message    = CUSTOM_MESSAGE.OK;
-			customCode = CUSTOM_CODE.OK;
-			log.info( req.url + " User saved - @" + user.username );
-		}
-
-		// Send the API response:
-		res.status( status ).send({ customCode: customCode, message: message });
-	});
+// User logout
+router.get( "/user/logout", function( req, res, next ) {
+	if( req.session.user ) {
+		log.info( "User @" + req.session.user.username + " logged out" );
+		req.session.destroy();
+		res.redirect( "/" );
+	}
+	else {
+		next();
+	}
 });
 
-router.post( "/user/login", function( req, res, next ) {
-
-	// Variables to be used in the API response:
-	var status     = 200;
-	var message    = CUSTOM_MESSAGE.UNKNOWN;
-	var customCode = CUSTOM_CODE.UNKNOWN;
-
-	// Get the values from the request body:
-	var username = req.body.username;
-	var password = req.body.password;
-
-	log.debug( req.url + " @" + username + " logging in" );
-
-	var query = UserModel.findOne({ username: username, password: password });
-
-	query.exec( function( err, user ) {
-		if( err ) {
-			log.error( req.url + " " + err.errmsg );
-
-			// Error occurred:
-			status     = 500;
-			message    = CUSTOM_MESSAGE.ERROR;
-			customCode = CUSTOM_CODE.ERROR;
-
-			return next( err );
-		}
-
-		if( user ) {
-			if( user.isActivated ) {
-				// Valid credentials and activated user
-				status     = 200;
-				message    = CUSTOM_MESSAGE.OK;
-				customCode = CUSTOM_CODE.OK;
-
-				// Set the user info in the session:
-				user.password    = undefined;
-				req.session.user = user;
-
-				log.info( req.url + " @" + username + " login successful" );
-			}
-			else {
-				// Valid credentials and unactivated user
-				status     = 200;
-				message    = CUSTOM_MESSAGE.ACCOUNT_UNACTIVATED;
-				customCode = CUSTOM_CODE.ACCOUNT_UNACTIVATED;
-				log.info( req.url + " @" + username + " is not activated" );
-			}
-		}
-		else {
-			// Invalid credentials
-			status     = 200;
-			message    = CUSTOM_MESSAGE.INVALID_CREDENTIALS;
-			customCode = CUSTOM_CODE.INVALID_CREDENTIALS;
-			log.info( req.url + " @" + username + " sent invalid credentials" );
-		}
-
-		// Send the API response:
-		res.status( status ).send({ customCode: customCode, message: message });
-	});
-});
-
+// User team page
 router.get( "/:unm/team", function( req, res, next ) {
-	var unm = req.params.unm;
+	// Form the query:
+	var query = { username: req.params.unm };
 
-	// Confirm if this user exists:
-	UserModel.findOne( { username: unm }, function( err, user ) {
-		if( err ) {
-			return next( err );
-		}
+	// Select the keys to retrieve:
+	var select = "-password";
 
-		if( user ) {
+	// The callback to be executed on promise getting resolved:
+	var cb = function( doc ) {
+		if( doc ) {
+			// User exists
 			res.render( "user/userTeam", {
-				title : "@" + unm + "'s team",
-				user  : user,
-				isLoggedIn: req.session.user ? true : false
+				title      : "@" + req.params.unm + "'s team",
+				user       : doc,
+				isLoggedIn : req.session.user ? true : false
 			});
 		}
 		else {
+			// User not found
 			next();
 		}
-	});
+	};
+
+	// Find the user:
+	UserUtils.getOne( query, select )
+		.then( cb )
+		.then( null, function( err ) {
+			// Error occurred, promise rejected...
+			log.error( "POST " + req.url + " Error occurred -", err );
+			throw new Error( err );
+		});
 });
+
 
 module.exports = router;

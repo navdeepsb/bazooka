@@ -3,13 +3,13 @@ extends ../layout
 block body
 	h1 #{ appName } admin panel
 
-	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/view-teams" ) All] &nbsp; #[a( href="/logout" ) Logout]
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/team/read" ) All] &nbsp; #[a( href="/admin/logout" ) Logout]
 
 	h2 #{ mode } team
 
-	form( class="form" method="post" action="/admin/save-team" )
+	form( class="form" method="post" action="/admin/team" )
 
-		if mode === "Edit"
+		if mode === "Update"
 			input( type="hidden" name="_id" class="txt" value="#{ team._id }" spellcheck="false" required="required" )
 
 		label Name
@@ -30,7 +30,7 @@ block body
 		label Country
 		input( type="text" name="country" class="txt" value="#{ team.country }" placeholder="ex. Spain" autocomplete="off" spellcheck="false" required="required" )
 
-		input( type="checkbox" id="inFirstDivision" name="inFirstDivision" checked="#{ team.inFirstDivision }" )
+		input( type="checkbox" id="inFirstDivision" name="inFirstDivision" checked=team.inFirstDivision )
 		label( for="inFirstDivision" ) In first division?
 
 		br

@@ -3,13 +3,13 @@ extends ../layout
 block body
 	h1 #{ appName } admin panel
 
-	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/view-players" ) All] &nbsp; #[a( href="/logout" ) Logout]
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/player/read" ) All] &nbsp; #[a( href="/admin/logout" ) Logout]
 
 	h2 #{ mode } player
 
-	form( class="form" method="post" action="/admin/save-player" )
+	form( class="form" method="post" action="/admin/player" )
 
-		if mode === "Edit"
+		if mode === "Update"
 			input( type="hidden" name="_id" class="txt" value="#{ player._id }" spellcheck="false" required="required" )
 
 		label Name
