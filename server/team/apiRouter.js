@@ -25,7 +25,7 @@ router.get( "/teams", function( req, res, next ) {
 
 	// The callback to be executed on promise getting resolved:
 	var cb = function( docs ) {
-		res.status( 200 ).send({
+		res.send({
 			teams         : docs,
 			customCode    : CUSTOM_CODE.OK,
 			customMessage : CUSTOM_MESSAGE.OK
@@ -39,6 +39,7 @@ router.get( "/teams", function( req, res, next ) {
 			// Error occurred, promise rejected...
 			log.error( "GET " + req.url + " Error occurred -", err );
 			res.status( 500 ).send({
+				status        : 500,
 				teams         : [],
 				customCode    : CUSTOM_CODE.ERROR,
 				customMessage : CUSTOM_MESSAGE.ERROR

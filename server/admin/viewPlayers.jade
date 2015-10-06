@@ -10,6 +10,24 @@ block body
 	if players.length == 0
 		p No players found
 	else
-		ul
+		select( name="team" class="txt" )
+			option( value="" ) All teams
+			for team in allTeams
+				option( value="#{ team }" ) #{ team }
+
+		select( name="position" class="txt" )
+			option( value="" ) All positions
+			for pos in allPos
+				option( value="#{ pos }" ) #{ pos }
+
+		select( name="status" class="txt" )
+			option( value="" ) All status
+			for stat in allStatus
+				option( value="#{ stat }" ) #{ stat }
+
+		ul( id="playersList" )
 			each player in players
 				li #{ player.team } - #{ player.jerseyNum } - (#{ player.position }) #{ player.name } - #{ player.status } &middot; #[a( href="/admin/player/update?id=#{ player._id }" ) edit] &middot; #[a( href="/admin/player/delete?id=#{ player._id }" ) delete]
+
+	script( src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js" )
+	script( src="/js/admin/filterPlayers.js" )

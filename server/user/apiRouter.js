@@ -117,6 +117,7 @@ router.post( "/login", function( req, res, next ) {
 			// Error occurred, promise rejected...
 			log.error( "POST " + req.url + " Error occurred -", err );
 			res.status( 500 ).send({
+				status     : 500,
 				customCode : CUSTOM_CODE.ERROR,
 				message    : CUSTOM_MESSAGE.ERROR
 			});

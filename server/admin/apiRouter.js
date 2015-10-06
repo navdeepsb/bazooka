@@ -82,7 +82,7 @@ router.post( "/team", authenticate, function( req, res, next ) {
 
 	// The callback to be executed on promise getting resolved:
 	var cb = function( doc ) {
-		log.info( "Admin @" + req.session.admin.username + " saved team ", {
+		log.info( "Admin @" + req.session.admin.username + " saved team", {
 			_id  : body._id,
 			name : body.name
 		});
@@ -120,7 +120,7 @@ router.post( "/player", authenticate, function( req, res, next ) {
 
 	// The callback to be executed on promise getting resolved:
 	var cb = function( doc ) {
-		log.info( "Admin @" + req.session.admin.username + " saved player ", {
+		log.info( "Admin @" + req.session.admin.username + " saved player", {
 			_id  : body._id,
 			name : body.name
 		});

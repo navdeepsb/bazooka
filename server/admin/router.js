@@ -2,6 +2,7 @@
 // =============================================================
 var router          = require( "express" ).Router();
 var log             = require( "bole" )( "adminRouter" );
+var _               = require( "lodash" );
 var AdminModel      = require( "./model" );
 var PlayerModel     = require( "../player/model" );
 var TeamModel       = require( "../team/model" );
@@ -216,8 +217,11 @@ router.get( "/player/read", authenticate, function( req, res, next ) {
 	// The callback to be executed on promise getting resolved:
 	var cb = function( docs ) {
 		res.render( "admin/viewPlayers", {
-			title   : "Read Players",
-			players : docs
+			title     : "Read Players",
+			players   : docs,
+			allTeams  : _.uniq( _.pluck( docs, "team" ) ),
+			allStatus : VALID_STATUS,
+			allPos    : VALID_POSITIONS
 		});
 	};
 
