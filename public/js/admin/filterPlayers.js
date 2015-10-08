@@ -12,7 +12,7 @@ $( "select" ).on( "change", function( e ) {
 		success : function( response ) {
 			$list.html( "" );
 			response.players.forEach( function( player ) {
-				$list.append( "<li>" + player.team + " - " + player.jerseyNum + " - (" + player.position + ") " + player.name + " - " + player.status + " &middot; <a href='/admin/player/update?id=" + player._id + "'>edit</a> &middot; <a href='/admin/player/delete?id=" + player._id + "'>delete</a></li>" );
+				$list.append( "<li>" + player.team + " - " + player.jerseyNum + " - (" + player.position + ") " + player.name + " - " + player.status + " - " + player._id + "&middot; <a href='/admin/player/update?id=" + player._id + "'>edit</a> &middot; <a href='/admin/player/delete?id=" + player._id + "'>delete</a></li>" );
 			});
 		}
 	});

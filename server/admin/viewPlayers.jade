@@ -27,7 +27,7 @@ block body
 
 		ul( id="playersList" )
 			each player in players
-				li #{ player.team } - #{ player.jerseyNum } - (#{ player.position }) #{ player.name } - #{ player.status } &middot; #[a( href="/admin/player/update?id=#{ player._id }" ) edit] &middot; #[a( href="/admin/player/delete?id=#{ player._id }" ) delete]
+				li #{ player.team } - #{ player.jerseyNum } - (#{ player.position }) #{ player.name } - #{ player.status } - #{ player._id }&middot; #[a( href="/admin/player/update?id=#{ player._id }" ) edit] &middot; #[a( href="/admin/player/delete?id=#{ player._id }" ) delete]
 
 	script( src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js" )
 	script( src="/js/admin/filterPlayers.js" )

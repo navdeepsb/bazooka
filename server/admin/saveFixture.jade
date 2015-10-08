@@ -1,0 +1,12 @@
+extends ../layout
+
+block body
+	h1 #{ appName } admin panel
+
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/fixture/read" ) All] &nbsp; #[a( href="/admin/logout" ) Logout]
+
+	h2 #{ mode } fixture
+
+	#form
+
+	script( src="/js/admin/saveFixture.bundle.js" )

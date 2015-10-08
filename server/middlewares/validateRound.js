@@ -1,19 +1,13 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
-var config   = require( "../config" );
-var error404 = require( "../errors/404" );
-
-
-// Constants:
-var MAX_ROUNDS = 2 * ( ( config.app.teams || 20 ) - 1 );
+var error404     = require( "../errors/404" );
+var VALID_ROUNDS = require( "../data/roundNums" );
 
 
 // Define a middleware for validating the round present
 // in the URL:
 var validateRound = function( req, res, next ) {
-	var currRound = req.params.round;
-
-	if( currRound < 1 || currRound > MAX_ROUNDS ) {
+	if( VALID_ROUNDS.indexOf( parseInt( req.params.round, 10 ) ) === -1 ) {
 		// Invalid round, redirect to 404...
 		error404( req, res, next );
 	}

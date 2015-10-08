@@ -23,6 +23,11 @@ router.get( "/teams", function( req, res, next ) {
 	// Select the keys to retrieve:
 	var select = "name";
 
+	if( req.query.select ) {
+		// Ex. "name,stadium,city" => "name stadium city"
+		select = req.query.select.replace( new RegExp( ",", "g" ), " " );
+	}
+
 	// The callback to be executed on promise getting resolved:
 	var cb = function( docs ) {
 		res.send({

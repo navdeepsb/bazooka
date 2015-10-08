@@ -13,3 +13,7 @@
 .small {
 	font-size: 0.8rem;
 }
+
+.mono {
+	font-family: "Source Code Pro", monospace;
+}

@@ -1,7 +1,7 @@
-.form {
+.form, .block {
 	max-width: 300px;
 }
-.form input:not([type="checkbox"]), .form button, .form select {
+.form input:not([type="checkbox"]), .form button, .form select, .form textarea {
 	width: 100%;
 	margin-bottom: 5px;
 }
@@ -15,6 +15,11 @@
 }
 .txt--error, .dropdown--error {
 	border: 1px solid #ef746f;
+}
+
+.txt__area {
+	resize: none;
+	height: 150px;
 }
 
 .btn {

@@ -40,7 +40,7 @@ module.exports = ( grunt ) ->
 				files: [
 					expand: true
 					cwd: "<%= dir.scripts.src %>/"
-					src: [ "*.js", "*.jsx" ]
+					src: [ "*.js{,x}", "admin/*.js{,x}" ]
 					dest: "<%= dir.scripts.dest %>/"
 					ext: ".bundle.js"
 				]

@@ -344,5 +344,13 @@ router.get( "/player/delete", authenticate, function( req, res, next ) {
 		});
 });
 
+// Creating a fixture
+router.get( "/fixture/create", authenticate, function( req, res, next ) {
+	res.render( "admin/saveFixture", {
+		title : "Create Fixture",
+		mode  : "Create"
+	});
+});
+
 
 module.exports = router;
