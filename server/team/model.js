@@ -12,7 +12,6 @@ var TeamSchema = new Schema({
 	stadium : { type: String, default: "" },
 	city    : { type: String, default: "" },
 	country : { type: String, default: "" },
-	rounds  : { type: Object, default: {} },
 	inFirstDivision: { type: Boolean, default: true }
 });
 

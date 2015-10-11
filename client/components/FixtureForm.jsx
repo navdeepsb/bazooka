@@ -31,8 +31,11 @@ var PlayerList = React.createClass({
 	},
 
 	_handleSelectorChange: function( event ) {
-		// Get the team and stadium name:
+		// Get the selector caption:
 		var dispText    = event.target.selectedOptions[ 0 ].innerHTML;
+
+		// Get the properties:
+		var teamId      = event.target.value;
 		var teamName    = dispText.split( ", " )[ 0 ];
 		var stadiumName = dispText.split( ", " )[ 1 ];
 
@@ -46,12 +49,15 @@ var PlayerList = React.createClass({
 			dataType : "json",
 			context  : this,
 			success  : function( response ) {
-				this.setState({ allPlayers: response.players || [] });
+				this.setState({
+					players    : [],
+					allPlayers : response.players || []
+				});
 			}
 		});
 
 		// Call the prop function too:
-		this.props.onTeamChange( teamName, stadiumName, event );
+		this.props.onTeamChange( teamId, teamName, stadiumName, event );
 	},
 
 	_handlePlayerChange: function( pid, pname, event ) {
@@ -154,6 +160,7 @@ var FixtureForm = React.createClass({
 	getInitialState: function() {
 		var teamObj = {
 			team      : "",
+			teamId    : "",
 			stadium   : "",
 			players   : [],
 			goals     : [],
@@ -194,7 +201,20 @@ var FixtureForm = React.createClass({
 	},
 
 	_saveFixture: function() {
-		console.log( "To save:", this.state.fixture );
+		console.log( "To save:", JSON.stringify( this.state.fixture ) );
+
+		$.ajax({
+			url     : this.props.submitUrl,
+			method  : "POST",
+			data    : this.state.fixture,
+			context : this,
+			success : function( response ) {
+				console.log( "SUCCESS - Response:", response );
+			},
+			error   : function( response ) {
+				console.log( "ERROR - Response:", response );
+			}
+		});
 	},
 
 	_handleRoundInput: function( event ) {
@@ -213,24 +233,26 @@ var FixtureForm = React.createClass({
 		}));
 	},
 
-	_handleHomeTeamChange: function( teamName, stadiumName, event ) {
+	_handleHomeTeamChange: function( teamId, teamName, stadiumName, event ) {
 		// Set the team:
 		this.setState( React.addons.update( this.state, {
 			fixture: {
 				home: {
 					team    : { $set: teamName },
+					teamId  : { $set: teamId },
 					stadium : { $set: stadiumName }
 				}
 			}
 		}));
 	},
 
-	_handleAwayTeamChange: function( teamName, stadiumName, event ) {
+	_handleAwayTeamChange: function( teamId, teamName, stadiumName, event ) {
 		// Set the team:
 		this.setState( React.addons.update( this.state, {
 			fixture: {
 				away: {
 					team    : { $set: teamName },
+					teamId  : { $set: teamId },
 					stadium : { $set: stadiumName }
 				}
 			}

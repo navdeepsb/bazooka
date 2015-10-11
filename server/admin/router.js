@@ -100,9 +100,6 @@ router.get( "/team/update", authenticate, function( req, res, next ) {
 	// Form the query:
 	var query = { _id: id };
 
-	// Select the keys to retrieve:
-	var select = "-rounds";
-
 	// The callback to be executed on promise getting resolved:
 	var cb = function( doc ) {
 		if( !doc ) {
@@ -122,7 +119,7 @@ router.get( "/team/update", authenticate, function( req, res, next ) {
 	};
 
 	// Proceed with the promise:
-	TeamUtils.getOne( query, select )
+	TeamUtils.getOne( query )
 		.then( cb )
 		.then( null, function( err ) {
 			// Error occurred, promise rejected...
@@ -260,13 +257,12 @@ router.get( "/player/update", authenticate, function( req, res, next ) {
 
 	// And the keys to select:
 	var teamSelect   = "name";
-	var playerSelect = "-pointsHistory";
 
 	// Callbacks for resolved promises:
 	var teamCb   = function( docs ) {
 		allTeams = docs;
 		// Return the promise for chaining:
-		return PlayerUtils.getOne( playerQuery, playerSelect );
+		return PlayerUtils.getOne( playerQuery );
 	};
 	var playerCb = function( doc ) {
 		if( !doc ) {
@@ -348,6 +344,14 @@ router.get( "/player/delete", authenticate, function( req, res, next ) {
 router.get( "/fixture/create", authenticate, function( req, res, next ) {
 	res.render( "admin/saveFixture", {
 		title : "Create Fixture",
+		mode  : "Create"
+	});
+});
+
+// Creating a fixture by RAW input i.e. direct JSON input
+router.get( "/fixture/createRaw", authenticate, function( req, res, next ) {
+	res.render( "admin/saveFixtureRaw", {
+		title : "Create Fixture Raw",
 		mode  : "Create"
 	});
 });

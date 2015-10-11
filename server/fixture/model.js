@@ -5,10 +5,12 @@ var VALID_ROUNDS = require( "../data/roundNums" );
 
 
 // Variables:
-var Schema = mongoose.Schema;
+var Schema   = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 // Mini-schemas ( reusable ):
 var goalsMiniSchema = [{
+	_id       : false,
 	player    : { id: ObjectId, name: String },
 	assistBy  : { id: ObjectId, name: String },
 	minute    : Number,
@@ -16,6 +18,7 @@ var goalsMiniSchema = [{
 }];
 
 var penaltiesMiniSchema = [{
+	_id      : false,
 	wonBy    : { id: ObjectId, name: String },
 	faultBy  : { id: ObjectId, name: String },
 	player   : { id: ObjectId, name: String },
@@ -25,12 +28,14 @@ var penaltiesMiniSchema = [{
 }];
 
 var cardsMiniSchema = [{
+	_id    : false,
 	player : { id: ObjectId, name: String },
 	minute : Number,
 	isRed  : { type: Boolean, default: false }
 }];
 
 var subsMiniSchema = [{
+	_id    : false,
 	in     : { id: ObjectId, name: String },
 	out    : { id: ObjectId, name: String },
 	minute : Number
@@ -38,8 +43,9 @@ var subsMiniSchema = [{
 
 var teamMiniSchema = {
 	team      : String,
+	teamId    : { type: ObjectId, required: true },
 	stadium   : String,
-	players   : [{ id: ObjectId, name: String }],
+	players   : [{ _id: false, id: ObjectId, name: String }],
 	goals     : goalsMiniSchema,
 	penalties : penaltiesMiniSchema,
 	cards     : cardsMiniSchema,

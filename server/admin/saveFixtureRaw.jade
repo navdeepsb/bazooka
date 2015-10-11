@@ -1,0 +1,17 @@
+extends ../layout
+
+block body
+	h1 #{ appName } admin panel
+
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/fixture/read" ) All] &nbsp; #[a( href="/admin/logout" ) Logout]
+
+	h2 #{ mode } fixture using raw JSON
+
+	p( class="error" ) Hey "admin"! Please enter valid JSON only...
+
+	form( class="form" method="post" action="/admin/fixture" )
+		textarea( name="json" class="txt txt__area" placeholder="Put fixture JSON here..." )
+
+		button( class="btn" ) Save
+
+	p Use this #[a( href="http://www.jsoneditoronline.org/" target="_blank" ) website] for JSON manipulation

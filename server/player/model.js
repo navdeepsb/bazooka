@@ -17,8 +17,7 @@ var PlayerSchema = new Schema({
 	worth     : { type: Number, default: 0 },
 	jerseyNum : { type: Number, default: 0 },
 	position  : { type: String, default: VALID_POSITIONS[ 0 ], enum: VALID_POSITIONS },
-	status    : { type: String, default: VALID_STATUS[ 0 ], enum: VALID_STATUS },
-	pointsHistory : { type: Object, default: {} }
+	status    : { type: String, default: VALID_STATUS[ 0 ], enum: VALID_STATUS }
 });
 
 
