@@ -6,6 +6,7 @@ var Standings = require( "./components/Standings" );
 
 React.render(
 	<Standings
+		getCurrRoundUrl="/currentround/"
 		getStandingsUrl="/api/teamstats/" />,
 	document.getElementById( "table" )
 );

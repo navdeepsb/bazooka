@@ -12,6 +12,7 @@ var userRouter       = require( "./user/router" );
 var teamAPIRouter    = require( "./team/apiRouter" );
 var playerAPIRouter  = require( "./player/apiRouter" );
 var fixtureAPIRouter = require( "./fixture/apiRouter" );
+var miscAPIRouter    = require( "./misc/apiRouter" );
 var error404         = require( "./errors/404" );
 var error500         = require( "./errors/500" );
 
@@ -68,6 +69,7 @@ app.use( "/admin", adminRouter );
 app.use( "/api", teamAPIRouter );
 app.use( "/api", playerAPIRouter );
 app.use( "/api", fixtureAPIRouter );
+app.use( miscAPIRouter );
 
 
 // Finally, set the error handlers:
