@@ -92,6 +92,37 @@ router.post( "/team", authenticate, function( req, res, next ) {
 		});
 });
 
+// Save team by raw JSON input request
+router.post( "/teamRaw", authenticate, function( req, res, next ) {
+	var body = null;
+
+	log.debug( "Admin @" + req.session.admin.username + " saving teams using raw JSON" );
+
+	try {
+		// `body` will be array of docs
+		body = JSON.parse( req.body.json );
+	}
+	catch( ex ) {
+		log.error( "POST " + req.url + " Invalid JSON!" );
+		return next();
+	}
+
+	// The callback to be executed on promise getting resolved:
+	var cb = function( docs ) {
+		log.info( "Admin @" + req.session.admin.username + " saved " + docs.length + " teams using raw JSON" );
+		res.redirect( "/admin/team/read" );
+	};
+
+	// Update/insert the team using promise:
+	TeamUtils.bulkInsert( body )
+		.then( cb )
+		.then( null, function( err ) {
+			// Error occurred, promise rejected...
+			log.error( "POST " + req.url + " Error occurred -", err );
+			res.send({ message: CUSTOM_MESSAGE.ERROR });
+		});
+});
+
 // Save player request
 router.post( "/player", authenticate, function( req, res, next ) {
 	var body = req.body;
@@ -112,6 +143,37 @@ router.post( "/player", authenticate, function( req, res, next ) {
 
 	// Update/insert the player using promise:
 	PlayerUtils.upsert( query, body )
+		.then( cb )
+		.then( null, function( err ) {
+			// Error occurred, promise rejected...
+			log.error( "POST " + req.url + " Error occurred -", err );
+			res.send({ message: CUSTOM_MESSAGE.ERROR });
+		});
+});
+
+// Save team by raw JSON input request
+router.post( "/playerRaw", authenticate, function( req, res, next ) {
+	var body = null;
+
+	log.debug( "Admin @" + req.session.admin.username + " saving players using raw JSON" );
+
+	try {
+		// `body` will be array of docs
+		body = JSON.parse( req.body.json );
+	}
+	catch( ex ) {
+		log.error( "POST " + req.url + " Invalid JSON!" );
+		return next();
+	}
+
+	// The callback to be executed on promise getting resolved:
+	var cb = function( docs ) {
+		log.info( "Admin @" + req.session.admin.username + " saved " + docs.length + " players using raw JSON" );
+		res.redirect( "/admin/player/read" );
+	};
+
+	// Update/insert the player using promise:
+	PlayerUtils.bulkInsert( body )
 		.then( cb )
 		.then( null, function( err ) {
 			// Error occurred, promise rejected...

@@ -61,6 +61,14 @@ module.exports = function( mModel ) {
 			}
 
 			return mModel.findOneAndUpdate( query, doc, opts ).exec();
+		},
+
+		/**
+		 * @desc Returns promise for inserting multiple docs in a
+		 *       collection
+		 */
+		bulkInsert: function( docs ) {
+			return mModel.create( docs );
 		}
 	};
 };

@@ -58,6 +58,14 @@ router.get( "/team/create", authenticate, function( req, res, next ) {
 	});
 });
 
+// Creating a team by RAW input i.e. direct JSON input
+router.get( "/team/createRaw", authenticate, function( req, res, next ) {
+	res.render( "admin/saveTeamRaw", {
+		title : "Create Team Raw",
+		mode  : "Create"
+	});
+});
+
 // Viewing teams
 router.get( "/team/read", authenticate, function( req, res, next ) {
 	// Form the query:
@@ -158,7 +166,7 @@ router.get( "/team/delete", authenticate, function( req, res, next ) {
 		res.send({ message: CUSTOM_MESSAGE.OK });
 
 		log.info( "@" + req.session.admin.username + " deleted team", {
-			_id  : id,
+			_id  : doc._id,
 			name : doc.name
 		});
 	};
@@ -201,6 +209,14 @@ router.get( "/player/create", authenticate, function( req, res, next ) {
 			log.error( "GET " + req.url + " Error occurred -", err );
 			res.send({ message: CUSTOM_MESSAGE.ERROR });
 		});
+});
+
+// Creating a player by RAW input i.e. direct JSON input
+router.get( "/player/createRaw", authenticate, function( req, res, next ) {
+	res.render( "admin/savePlayerRaw", {
+		title : "Create Player Raw",
+		mode  : "Create"
+	});
 });
 
 // Viewing players
@@ -312,7 +328,7 @@ router.get( "/player/delete", authenticate, function( req, res, next ) {
 	var select = "name";
 
 	// The callback to be executed on promise getting resolved:
-	var cb = function( removed ) {
+	var cb = function( doc ) {
 		if( !doc ) {
 			// Not found
 			return next();
@@ -325,13 +341,13 @@ router.get( "/player/delete", authenticate, function( req, res, next ) {
 		res.send({ message: CUSTOM_MESSAGE.OK });
 
 		log.info( "@" + req.session.admin.username + " deleted player", {
-			_id  : id,
+			_id  : doc._id,
 			name : doc.name
 		});
 	};
 
 	// Now delete the player using promise:
-	PlayerUtils.delete( query )
+	PlayerUtils.getOne( query )
 		.then( cb )
 		.then( null, function( err ) {
 			// Error occurred, promise rejected...

@@ -1,0 +1,22 @@
+extends ../layout
+
+block body
+	h1 #{ appName } admin panel
+
+	p #[a( href="/admin/panel" ) Admin home] &nbsp; #[a( href="/admin/team/read" ) All] &nbsp; #[a( href="/admin/logout" ) Logout]
+
+	h2 #{ mode } teams using raw JSON
+
+	p( class="error" ) Hey "admin"! Please enter valid JSON only...
+
+	span NOTE:
+	ol
+		li JSON should be array of objects
+		li This will blindly insert the docs in the collection, no upsert
+
+	form( class="form" method="post" action="/admin/teamRaw" )
+		textarea( name="json" class="txt txt__area" placeholder="Put teams JSON here..." )
+
+		button( class="btn" ) Save
+
+	p Use this #[a( href="http://www.jsoneditoronline.org/" target="_blank" ) website] for JSON manipulation
