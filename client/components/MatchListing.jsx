@@ -2,19 +2,24 @@
 // =============================================================
 var $       = require( "jquery" );
 var React   = require( "react" );
-var matches = require( "../data/matches" );
 
 
 // The single match component:
 var Match = React.createClass({
 
-	_getGoalString: function( goals ) {
+	_getGoals: function( goals, penalties ) {
+		return goals.length + penalties.filter( function( penalty ) {
+			return !penalty.isMissed;
+		}).length;
+	},
+
+	_getGoalString: function( goals, penalties ) {
 		var retVal = "";
 		var scorerMap = {};
 
 		goals.forEach( function( goal ) {
-			var scorer  = goal.scorer;
-			var additionalInfo = goal.isPenalty ? "(pen.) " : "";
+			var scorer = goal.player.name;
+			var additionalInfo = goal.isOwnGoal ? "(o.g.) " : "";
 
 			if( scorerMap[ scorer ] ) {
 				// Scorer already exists
@@ -23,6 +28,23 @@ var Match = React.createClass({
 			else {
 				// New scorer
 				scorerMap[ scorer ] = scorer + " " + additionalInfo + goal.minute + "'";
+			}
+		});
+
+		penalties.forEach( function( penalty ) {
+			var player = penalty.player.name;
+
+			if( penalty.isMissed ) {
+				return;
+			}
+
+			if( scorerMap[ player ] ) {
+				// Scorer already exists
+				scorerMap[ player ] += ", (pen.) " + penalty.minute + "'";
+			}
+			else {
+				// New scorer
+				scorerMap[ player ] = player + " (pen.) " + penalty.minute + "'";
 			}
 		});
 
@@ -58,7 +80,7 @@ var Match = React.createClass({
 							<strong>{ home.team }</strong>
 						</td>
 						<td width="33%" className="center">
-							<h1>{ home.goals.length } - { away.goals.length }</h1>
+							<h1>{ this._getGoals( home.goals, home.penalties ) } - { this._getGoals( away.goals, away.penalties ) }</h1>
 						</td>
 						<td width="33%" className="right">
 							<strong>{ away.team }</strong>
@@ -66,8 +88,8 @@ var Match = React.createClass({
 					</tr>
 				</table>
 				<div>
-					<div className="small" style={ inlineBlockStyle } dangerouslySetInnerHTML={{ __html: this._getGoalString( home.goals ) }} />
-					<div className="small right" style={ inlineBlockStyle } dangerouslySetInnerHTML={{ __html: this._getGoalString( away.goals ) }} />
+					<div className="small" style={ inlineBlockStyle } dangerouslySetInnerHTML={{ __html: this._getGoalString( home.goals, home.penalties ) }} />
+					<div className="small right" style={ inlineBlockStyle } dangerouslySetInnerHTML={{ __html: this._getGoalString( away.goals, away.penalties ) }} />
 				</div>
 				<p className="center no-margin">
 					<a href="/matches" className="small">view detail</a>
@@ -85,9 +107,21 @@ var MatchListing = React.createClass({
 		var currRound = location.href.substr( location.href.lastIndexOf( "/" ) + 1 );
 
 		return {
-			round: currRound,
-			matchList: matches[ currRound ] || []
+			round     : currRound,
+			matchList : []
 		};
+	},
+
+	componentDidMount: function() {
+		$.ajax({
+			url      : this.props.getFixturesUrl + this.state.round,
+			type     : "GET",
+			dataType : "json",
+			context  : this,
+			success  : function( response ) {
+				this.setState({ matchList: response.fixtures });
+			}
+		});
 	},
 
 	render: function() {

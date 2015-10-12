@@ -12,6 +12,7 @@ var ObjectId = Schema.ObjectId;
 var TeamHistorySchema = new Schema({
 	team    : { type: String, required: true },
 	teamId  : { type: ObjectId, required: true, unique: true },
+	rounds  : Object, // can be used as a virtual field
 	history : [{
 		_id         : false,
 		round       : Number,

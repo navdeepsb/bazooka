@@ -5,6 +5,7 @@ var MatchListing = require( "./components/MatchListing" );
 
 
 React.render(
-	<MatchListing />,
+	<MatchListing
+		getFixturesUrl="/api/fixtures?round=" />,
 	document.getElementById( "matches" )
 );

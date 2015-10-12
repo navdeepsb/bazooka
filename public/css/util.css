@@ -17,3 +17,7 @@
 .mono {
 	font-family: "Source Code Pro", monospace;
 }
+
+.bold {
+	font-weight: bold
+}

@@ -57,5 +57,12 @@ router.get( "/matches/:round", validateRound, function( req, res, next ) {
 	});
 });
 
+// Standings page
+router.get( "/standings", function( req, res, next ) {
+	res.render( "site/standings", {
+		title : config.app.league + " Standings"
+	});
+});
+
 
 module.exports = router;
