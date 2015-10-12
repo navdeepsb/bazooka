@@ -8,8 +8,8 @@ var app         = require( "./app" );
 
 
 // Nifty variables:
-var port  = process.env.EXPRESS_PORT || config.server.port;
-var dbUri = config.db.uri;
+var port  = process.env.PORT || config.server.port;
+var dbUri = process.env.MONGOLAB_URI || config.db.uri;
 var log   = bole( "server" );
 
 
