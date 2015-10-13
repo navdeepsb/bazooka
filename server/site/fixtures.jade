@@ -1,0 +1,10 @@
+extends ../layout
+
+block body
+	include ./includes/header
+
+	h1 #{ leagueName } fixtures
+
+	#fixtures
+
+	script( src="/js/fixtures.bundle.js" )

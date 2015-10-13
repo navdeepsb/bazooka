@@ -20,7 +20,7 @@ router.use( express.static( join( __dirname, "../../public" ) ) );
 // =============================================================
 
 // Home page
-router.get( "/", function( req, res ) {
+router.get( "/", function( req, res, next ) {
 	res.render( "site/home", {
 		title       : config.app.name,
 		titleSuffix : "",
@@ -29,31 +29,30 @@ router.get( "/", function( req, res ) {
 });
 
 // Signup page
-router.get( "/signup", preventLoggedInUser, function( req, res ) {
+router.get( "/signup", preventLoggedInUser, function( req, res, next ) {
 	res.render( "site/signup", {
 		title : "Signup"
 	});
 });
 
 // Login page
-router.get( "/login", preventLoggedInUser, function( req, res ) {
+router.get( "/login", preventLoggedInUser, function( req, res, next ) {
 	res.render( "site/login", {
 		title : "Login"
 	});
 });
 
 // Acct. created page
-router.get( "/account-created", preventLoggedInUser, function( req, res ) {
+router.get( "/account-created", preventLoggedInUser, function( req, res, next ) {
 	res.render( "site/accountCreated", {
 		title : "Account created"
 	});
 });
 
-// Matches page
-router.get( "/matches/:round", validateRound, function( req, res, next ) {
-	res.render( "site/matches", {
-		title : config.app.league + " Matches",
-		round : req.params.round
+// Fixture listing page
+router.get( "/fixtures", function( req, res, next ) {
+	res.render( "site/fixtures", {
+		title : config.app.league + " Fixtures"
 	});
 });
 

@@ -1,11 +1,12 @@
 // IMPORT ALL THE DEPENDENCIES
 // =============================================================
-var $       = require( "jquery" );
-var React   = require( "react" );
+var $        = require( "jquery" );
+var React    = require( "react" );
+var Selector = require( "./common/Selector" );
 
 
-// The single match component:
-var Match = React.createClass({
+// The single fixture component:
+var Fixture = React.createClass({
 
 	_getGoals: function( goals, penalties ) {
 		return goals.length + penalties.filter( function( penalty ) {
@@ -56,9 +57,9 @@ var Match = React.createClass({
 	},
 
 	render: function() {
-		var match = this.props.data;
-		var home  = match.home;
-		var away  = match.away;
+		var fixture = this.props.data;
+		var home  = fixture.home;
+		var away  = fixture.away;
 		var inlineBlockStyle = {
 			display: "inline-block",
 			width: "50%",
@@ -67,11 +68,11 @@ var Match = React.createClass({
 		};
 
 		return (
-			<div className="match__card">
+			<div className="fixture__card">
 				<table width="100%">
 					<tr className="small">
 						<td>{ home.stadium }</td>
-						<td className="right">{ match.date }</td>
+						<td className="right">{ fixture.date }</td>
 					</tr>
 				</table>
 				<table width="100%">
@@ -92,7 +93,7 @@ var Match = React.createClass({
 					<div className="small right" style={ inlineBlockStyle } dangerouslySetInnerHTML={{ __html: this._getGoalString( away.goals, away.penalties ) }} />
 				</div>
 				<p className="center no-margin">
-					<a href="/matches" className="small">view detail</a>
+					<a href="/fixtures" className="small">view detail</a>
 				</p>
 			</div>
 		);
@@ -101,34 +102,79 @@ var Match = React.createClass({
 
 
 // The main component:
-var MatchListing = React.createClass({
+var FixtureListing = React.createClass({
 
 	getInitialState: function() {
-		var currRound = location.href.substr( location.href.lastIndexOf( "/" ) + 1 );
-
 		return {
-			round     : currRound,
-			matchList : []
+			round       : 1,
+			fixtureList   : [],
+			validRounds : []
 		};
 	},
 
 	componentDidMount: function() {
+		// 1) Get the current round:
 		$.ajax({
-			url      : this.props.getFixturesUrl + this.state.round,
+			url      : this.props.getCurrRoundUrl,
 			type     : "GET",
 			dataType : "json",
 			context  : this,
 			success  : function( response ) {
-				this.setState({ matchList: response.fixtures });
+				this.setState({ round: response.round });
+			}
+		});
+
+		// 2) Form the valid rounds array:
+		var allRounds = [];
+		var currRound = this.state.round;
+		while( currRound > 0 ) {
+			allRounds.push({ _id: currRound, name: currRound });
+			currRound--;
+		}
+		this.setState({ validRounds: allRounds });
+
+		// 3) Get the fixtures:
+		this._getFixtures( this.state.round );
+	},
+
+	_getFixtures: function( round ) {
+		$.ajax({
+			url      : this.props.getFixturesUrl + round,
+			type     : "GET",
+			dataType : "json",
+			context  : this,
+			success  : function( response ) {
+				this.setState({ fixtureList: response.fixtures });
 			}
 		});
 	},
 
+	_handleRoundChange: function( event ) {
+		var round = parseInt( event.target.value, 10 );
+
+		this._getFixtures( round );
+
+		this.setState({ round: round });
+	},
+
 	render: function() {
 		return (
-			<div id="allMatches">
-				{ this.state.matchList.map( function( match, idx ) {
-					return <Match key={ idx } data={ match } />;
+			<div id="allFixtures">
+				<p>
+					Round
+					&nbsp;
+					<Selector
+						caption="Select round"
+						options={ this.state.validRounds }
+						initialValue={ this.state.round }
+						onChange={ this._handleRoundChange } />
+					&nbsp;
+					&nbsp;
+					<a href={ "/standings" }>view standings</a>
+				</p>
+
+				{ this.state.fixtureList.map( function( fixture, idx ) {
+					return <Fixture key={ idx } data={ fixture } />;
 				} ) }
 			</div>
 		);
@@ -136,4 +182,4 @@ var MatchListing = React.createClass({
 });
 
 
-module.exports = MatchListing;
+module.exports = FixtureListing;

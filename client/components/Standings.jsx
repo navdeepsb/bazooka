@@ -74,7 +74,7 @@ var Standings = React.createClass({
 						onChange={ this._handleRoundChange } />
 					&nbsp;
 					&nbsp;
-					<a href={ "/matches/" + this.state.round }>view fixtures</a>
+					<a href={ "/matches" }>view fixtures</a>
 				</p>
 				<table>
 					<thead>
